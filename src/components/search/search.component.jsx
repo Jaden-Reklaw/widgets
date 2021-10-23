@@ -19,7 +19,12 @@ const Search = () => {
             })
             setResults(data.query.search);
         };
-        if(term) search();
+
+        //throttling api calls with setTimeout
+        const timeOutId = setTimeout(() => {
+            if(term) search();
+        }, 500);
+        
     }, [term]);
 
     const removeTags = (str) => {
