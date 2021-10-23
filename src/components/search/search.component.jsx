@@ -6,25 +6,38 @@ const Search = () => {
     const [results, setResults] = useState([]);
     console.log(results);
     
-    useEffect(() => {
-        const search = async () => {
-            const { data } = await axios.get("https://en.wikipedia.org/w/api.php", {
-                params: {
-                    action: 'query',
-                    list: 'search',
-                    origin: '*',
-                    format: 'json',
-                    srsearch: term
-                }
-            })
-            setResults(data.query.search);
-        };
+    // useEffect(() => {
+    //     const search = async () => {
+    //         const { data } = await axios.get("https://en.wikipedia.org/w/api.php", {
+    //             params: {
+    //                 action: 'query',
+    //                 list: 'search',
+    //                 origin: '*',
+    //                 format: 'json',
+    //                 srsearch: term
+    //             }
+    //         })
+    //         setResults(data.query.search);
+    //     };
 
-        //throttling api calls with setTimeout
-        const timeOutId = setTimeout(() => {
-            if(term) search();
-        }, 500);
+    //     //throttling api calls with setTimeout
+    //     const timeOutId = setTimeout(() => {
+    //         if(term) search();
+    //     }, 500);
         
+    // }, [term]);
+
+    //first load like componentDidmount
+    //second runs like a componentDidUpdate when term changes
+    //third returns a clean up function that is ran first each time componentUpdate is ran
+    //useEffect with Cleanup
+    useEffect(() => {
+        console.log('initial render or term has changed');
+
+        //clean up you can return a function only in useEffect
+        return () => {
+            console.log('Clean up!')
+        };
     }, [term]);
 
     const removeTags = (str) => {
