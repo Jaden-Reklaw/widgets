@@ -1,0 +1,48 @@
+    Hooks lifecycle Methods
+    //used for componentDidMount
+    // useEffect(() => {
+    //     console.log('running useEffect componentDidMount');
+    // }, []);
+
+    //used for componentDidUpdate
+    // useEffect(() => {
+    //     console.log('running useEffect componentDidUpdate');
+    // });
+
+    //used for componentDidUpdate based on data change
+
+    // useEffect(() => {
+    //     console.log('running useEffect componentDidUpdate on Term change');
+    // }, [term]);
+
+    How to do async code in useEffect
+    //method 1 to use async request
+    // useEffect(() => {
+    //     const search = async () => {
+    //         const { data } = await axios.get("https://en.wikipedia.org/w/api.php", {
+    //             params: {
+    //                 action: 'query',
+    //                 list: 'search',
+    //                 origin: '*',
+    //                 format: 'json',
+    //                 srsearch: term
+    //             }
+    //         })
+    //         setResults(data.query.search);
+    //     };
+    //     if(term) search();
+    // }, [term]);
+
+    //method 2 immediately envoke with () after the function
+    // useEffect(() => {
+    //     (async () => {
+    //         await axios.get("dlkfja")
+    //     })();
+    // }, [term]);
+
+    //method 3 simple then
+    // useEffect(() => {
+    //     axios.get("djkfskjh").then(response => {
+    //         console.log(response.data)
+    //     });
+    // }, [term]);
