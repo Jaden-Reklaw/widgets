@@ -6,38 +6,32 @@ const Search = () => {
     const [results, setResults] = useState([]);
     console.log(results);
     
-    // useEffect(() => {
-    //     const search = async () => {
-    //         const { data } = await axios.get("https://en.wikipedia.org/w/api.php", {
-    //             params: {
-    //                 action: 'query',
-    //                 list: 'search',
-    //                 origin: '*',
-    //                 format: 'json',
-    //                 srsearch: term
-    //             }
-    //         })
-    //         setResults(data.query.search);
-    //     };
-
-    //     //throttling api calls with setTimeout
-    //     const timeOutId = setTimeout(() => {
-    //         if(term) search();
-    //     }, 500);
-        
-    // }, [term]);
-
-    //first load like componentDidmount
-    //second runs like a componentDidUpdate when term changes
-    //third returns a clean up function that is ran first each time componentUpdate is ran
-    //useEffect with Cleanup
+    //full throttling algo for api calls with cancel using clean up
+    //and setTimeout for waiting to request info from api
     useEffect(() => {
-        console.log('initial render or term has changed');
-
-        //clean up you can return a function only in useEffect
-        return () => {
-            console.log('Clean up!')
+        const search = async () => {
+            const { data } = await axios.get("https://en.wikipedia.org/w/api.php", {
+                params: {
+                    action: 'query',
+                    list: 'search',
+                    origin: '*',
+                    format: 'json',
+                    srsearch: term
+                }
+            })
+            setResults(data.query.search);
         };
+
+        //throttling api calls with setTimeout
+        const timeoutId = setTimeout(() => {
+            if(term) search();
+        }, 1000);
+        
+        //clean up to cancel timeoutRequest
+        return () => {
+            clearTimeout(timeoutId);
+        }
+
     }, [term]);
 
     const removeTags = (str) => {
