@@ -5,23 +5,7 @@ const Search = () => {
     const [term, setTerm] = useState('');
     const [results, setResults] = useState([]);
     console.log(results);
-    //used for componentDidMount
-    // useEffect(() => {
-    //     console.log('running useEffect componentDidMount');
-    // }, []);
-
-    //used for componentDidUpdate
-    // useEffect(() => {
-    //     console.log('running useEffect componentDidUpdate');
-    // });
-
-    //used for componentDidUpdate based on data change
-
-    // useEffect(() => {
-    //     console.log('running useEffect componentDidUpdate on Term change');
-    // }, [term]);
-
-    //method 1 to use async request
+    
     useEffect(() => {
         const search = async () => {
             const { data } = await axios.get("https://en.wikipedia.org/w/api.php", {
@@ -38,19 +22,26 @@ const Search = () => {
         if(term) search();
     }, [term]);
 
-    //method 2 immediately envoke with () after the function
-    // useEffect(() => {
-    //     (async () => {
-    //         await axios.get("dlkfja")
-    //     })();
-    // }, [term]);
+    const removeTags = (str) => {
+        if ((str===null) || (str===''))
+        return false;
+    else
+        str = str.toString();
+    return str.replace( /(<([^>]+)>)/ig, '');
+    }
 
-    //method 3 simple then
-    // useEffect(() => {
-    //     axios.get("djkfskjh").then(response => {
-    //         console.log(response.data)
-    //     });
-    // }, [term]);
+    const renderResults = results.map((result) => {
+        return(
+            <div className="item" key={result.pageid}>
+                <div className="content">
+                    <div className="header">
+                        {result.title}
+                    </div>
+                    {removeTags(result.snippet)}
+                </div>
+            </div>
+        );
+    });
 
     return (
         <> 
@@ -65,6 +56,9 @@ const Search = () => {
                         value={term} 
                     />
                 </div>
+            </div>
+            <div className="ui celled list">
+                {renderResults}
             </div>
         </>
     );
