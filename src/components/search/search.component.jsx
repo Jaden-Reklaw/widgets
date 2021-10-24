@@ -3,11 +3,23 @@ import axios from "axios";
 
 const Search = () => {
     const [term, setTerm] = useState('programming');
+    const [debouncedTerm, setDebouncedTerm] = useState(term);
     const [results, setResults] = useState([]);
-    console.log(results);
     
-    //full throttling algo for api calls with cancel using clean up
-    //and setTimeout for waiting to request info from api
+    //final throttling api algo with all dependencies of state
+    useEffect(() => {
+        //throttling api calls with setTimeout
+        const timeoutId = setTimeout(() => {
+            setDebouncedTerm(term);
+        }, 1000);
+
+        //clean up to cancel timeoutRequest
+        return () => {
+            clearTimeout(timeoutId);
+        }
+    }, [term]);
+
+    //this useEffect only runs if the users stops typing
     useEffect(() => {
         const search = async () => {
             const { data } = await axios.get("https://en.wikipedia.org/w/api.php", {
@@ -16,35 +28,23 @@ const Search = () => {
                     list: 'search',
                     origin: '*',
                     format: 'json',
-                    srsearch: term
+                    srsearch: debouncedTerm
                 }
             })
             setResults(data.query.search);
         };
+        search();
+    }, [debouncedTerm]);
 
-        //first time request logic for immediate results from default value
-        if(term && !results.length) {
-            search();
-        } else {
-            //throttling api calls with setTimeout
-            const timeoutId = setTimeout(() => {
-                if(term) search();
-            }, 1000);
-            
-            //clean up to cancel timeoutRequest
-            return () => {
-                clearTimeout(timeoutId);
-            }
-        }
-
-    }, [term]);
-
+    //used to remove html tags
     const removeTags = (str) => {
-        if ((str===null) || (str===''))
-        return false;
-    else
-        str = str.toString();
-    return str.replace( /(<([^>]+)>)/ig, '');
+        if ((str===null) || (str==='')){
+            return false;
+        } else {
+            str = str.toString();
+        }
+            
+        return str.replace( /(<([^>]+)>)/ig, '');
     }
 
     const renderResults = results.map((result) => {
