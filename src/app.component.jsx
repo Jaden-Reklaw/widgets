@@ -4,6 +4,7 @@ import { options } from "./options";
 import Accordion from "./components/accordion/accordion.component";
 import Search from "./components/search/search.component";
 import Dropdown from "./components/dropdown/dropdown.component";
+import Translate from "./components/translate/translate.component";
 
 const App = () => {
     const [selected, setSelected] = useState(options[0]);
@@ -13,7 +14,7 @@ const App = () => {
             <h1>Widgets App</h1>
             {/* <Accordion items={items} /> */}
             {/* <Search /> */}
-            <button
+            {/* <button
                 onClick={() => setShowDropdown(!showDropdown)}
             >
                 Toggle Dropdown
@@ -24,7 +25,8 @@ const App = () => {
                     onSelectedChange={setSelected}
                     options={options}
                 /> : null
-            }
+            } */}
+            <Translate />
         </>
     );
 }

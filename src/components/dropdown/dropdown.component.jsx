@@ -34,9 +34,10 @@ const Dropdown = ({options, selected, onSelectedChange}) => {
     });
 
     //ref.current will give you reference to the div
-    console.log(ref.current);
+    //console.log(ref.current);
     return (
         <>
+            <h1>Dropdown Component</h1>
             <div ref={ref} className="ui form">
                 <div className="field">
                     <label className="label">Select a Color</label>
