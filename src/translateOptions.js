@@ -11,4 +11,8 @@ export const translateOptions = [
         label: "Hindi",
         value: "hi"
     },
+    {
+        label: "Dutch",
+        value: "nl"
+    }
 ];
