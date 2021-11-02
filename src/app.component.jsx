@@ -5,28 +5,33 @@ import Accordion from "./components/accordion/accordion.component";
 import Search from "./components/search/search.component";
 import Dropdown from "./components/dropdown/dropdown.component";
 import Translate from "./components/translate/translate.component";
+import Route from './components/route/route.component';
+import Header from "./components/header/header.component";
 
 const App = () => {
     const [selected, setSelected] = useState(options[0]);
-    const [showDropdown, setShowDropdown] = useState(true);
+    
     return(
         <>
+            <Header />
             <h1>Widgets App</h1>
-            {/* <Accordion items={items} /> */}
-            {/* <Search /> */}
-            {/* <button
-                onClick={() => setShowDropdown(!showDropdown)}
-            >
-                Toggle Dropdown
-            </button>
-            {showDropdown ?
-                <Dropdown 
+            <Route path="/">
+                <Accordion items={items}/>
+            </Route>
+            <Route path="/search">
+                <Search />
+            </Route>
+            <Route path="/dropdown">
+                <Dropdown
+                    label="Select a Color"
+                    options={options} 
                     selected={selected}
                     onSelectedChange={setSelected}
-                    options={options}
-                /> : null
-            } */}
-            <Translate />
+                />
+            </Route>
+            <Route path="/translate">
+                <Translate />
+            </Route>
         </>
     );
 }
